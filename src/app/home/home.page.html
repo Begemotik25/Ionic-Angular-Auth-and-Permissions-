@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Food</ion-title>
+    <ion-buttons slot="secondary">
+      ({{userName}})
+      <ion-button routerLink="/login" routerDirection="root">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-button
+        routerLink="/admin"
+        shape="round"
+        fill="outline"
+        (click)="admin()"
+        color="secondary"
+      >
+        <ion-icon slot="start" name="admin"></ion-icon>Admin
+      </ion-button>
+      <ion-button
+        routerLink="/about"
+        shape="round"
+        fill="outline"
+        color="danger"
+      >
+        <ion-icon slot="start" name="about"></ion-icon>About
+      </ion-button>
+    </ion-list-header>
+
+    <ion-list-header>
+      <!-- <ion-button shape="round" fill="outline" color="secondary">
+          <ion-icon slot="start" name="admin"></ion-icon>Admin
+        </ion-button>-->
+      <ion-label>Food</ion-label>
+      <ion-button shape="round" fill="outline" color="success" (click)="add()">
+        <ion-icon slot="start" name="add"></ion-icon>Add
+      </ion-button>
+    </ion-list-header>
+    <app-dish-food
+      *ngIf="showNew"
+      [isNew]="true"
+      (addFood)="addFood($event)"
+      (cancelAddingFood)="showNew=false"
+    >
+    </app-dish-food>
+
+    <div *ngFor="let food of foods; let i = index">
+      <ion-item-sliding>
+        <ion-item-options side="start">
+          <ion-item-option color="primary" (click)="showEdit=i">
+            <ion-icon name="create"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="delete(i)">
+            <ion-icon name="trash"></ion-icon> Delete
+          </ion-item-option>
+        </ion-item-options>
+        <ion-item (click)="showEdit=-1">
+          <ion-icon name="pizza-outline" slop="start"></ion-icon>
+          <ion-label>{{food.name}}</ion-label>
+          <ion-note slot="end"> {{food.weight}}</ion-note>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option
+            color="secondary"
+            routerLink="/dishes/{{food.numb}}"
+            routerDirection="forward"
+          >
+            <ion-icon name="reorder-four-outline"></ion-icon>
+
+            Dish
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+      <app-dish-food
+        *ngIf="showEdit==i"
+        [isNew]="false"
+        [dishFood]="food"
+      ></app-dish-food>
+    </div>
+  </ion-list>
+  <ion-item text-center>
+    <ion-input type="text" [(ngModel)]="extraData"></ion-input>
+  </ion-item>
+  <ion-button color="primary" class="ion-float-right" (click)="sendData()">
+    <ion-icon slot="start" name="send"></ion-icon> Send
+  </ion-button>
+</ion-content>

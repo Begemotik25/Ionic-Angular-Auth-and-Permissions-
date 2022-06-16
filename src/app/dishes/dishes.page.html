@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Dishes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Dish</ion-label>
+      <ion-button shape="round" fill="outline" color="success" (click)="add()">
+        <ion-icon slot="start" name="add"></ion-icon>Add
+      </ion-button>
+    </ion-list-header>
+    <app-dishess
+      *ngIf="showNew_one"
+      [isNew_one]="true"
+      (addDish)="addDish($event)"
+      (cancelAddingDish)="showNew_one=false"
+    >
+    </app-dishess>
+
+    <div *ngFor="let dish of dishess; let i = index">
+      <ion-item-sliding>
+        <ion-item-options side="start">
+          <ion-item-option color="primary" (click)="showEdit_one=i">
+            <ion-icon name="create"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="delete(i)">
+            <ion-icon name="trash"></ion-icon> Delete
+          </ion-item-option>
+        </ion-item-options>
+        <ion-item (click)="showEdit_one=-1">
+          <ion-icon name="fast-food-outline" slop="start"></ion-icon>
+          <ion-label text-wrap>{{dish.name}}</ion-label>
+          <ion-note slot="end">{{dish.weight}}</ion-note>
+        </ion-item>
+      </ion-item-sliding>
+      <app-dishess
+        *ngIf="showEdit_one==i"
+        [isNew_one]="false"
+        [dishess]="dish"
+      ></app-dishess>
+    </div>
+  </ion-list>
+</ion-content>
